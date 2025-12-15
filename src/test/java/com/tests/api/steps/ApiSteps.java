@@ -133,7 +133,7 @@ public class ApiSteps {
     }
 
 
-    // Get List of user
+    // ---------------- GET LIST OF USER --------------------------
 
     @When("I request GET \\/user")
     public void iRequestGETUser() {
@@ -153,7 +153,7 @@ public class ApiSteps {
     }
 
 
-    // Get User by ID
+    // ---------------- GET USER BY ID ---------------------------
 
     @Given("I have an existing user with firstName {string}, lastName {string}, email {string}")
     public void iHaveAnExistingUserWithFirstNameLastNameEmail(String firstName, String lastName, String email) {
@@ -194,7 +194,7 @@ public class ApiSteps {
                 .response();
     }
 
-    // Negative Api Test
+    // -------------------- NEGATIVE API TEST ----------------------------
 
     @Given("I have user data with firstName {string} and lastName {string} but no email")
     public void iHaveUserDataWithFirstNameAndLastNameButNoEmail(String firstName, String lastName) {

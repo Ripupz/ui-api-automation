@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         glue = {"com.tests.web.steps","com.tests.api.steps"},
         plugin = {
         "pretty",
-        "html:target/cucumber-html-report",
+        "html:target/cucumber-html-report.html",
         "json:target/cucumber.json"
         },
         snippets = CucumberOptions.SnippetType.UNDERSCORE
