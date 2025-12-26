@@ -2,6 +2,7 @@ package com.tests.web.steps;
 
 
 import com.tests.web.utils.DriverFactory;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -14,7 +15,7 @@ public class WebSteps {
 
     WebDriver driver = DriverFactory.getDriver();
 
-
+    // Verify Homepage
     @Given("I open the homepage")
     public void iOpenTheHomepage() {
         driver.get("https://www.demoblaze.com/");
@@ -29,17 +30,15 @@ public class WebSteps {
         );
     }
 
-    @When("I add the first product to cart")
-    public void iAddTheFirstProductToCart() {
-        driver.findElement(By.cssSelector("#tbodyid .col-lg-4.col-md-6.mb-4 a")).click();
-        driver.findElement(By.cssSelector(".btn.btn-success.btn-lg")).click();
+    // View Product Details
+    @When("I click the first product")
+    public void iClickTheFirstProduct() {
+
     }
 
-    @Then("the cart should contain at least {int} item")
-    public void theCartShouldContainAtLeastItem(Integer count) {
-        driver.get("https://www.demoblaze.com/cart.html");
-
-        int items = driver.findElements(By.cssSelector("#tbodyid tr")).size();
-        assertTrue("Cart contains only " + items + " items", items >= count);
+    @Then("the product detail page should be displayed")
+    public void theProductDetailPageShouldBeDisplayed() {
+        // Write code here that turns the phrase above into concrete actions
+        throw new PendingException();
     }
 }

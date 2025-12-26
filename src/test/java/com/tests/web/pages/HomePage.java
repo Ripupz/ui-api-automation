@@ -7,7 +7,8 @@ import org.openqa.selenium.support.FindBy;
 
 public class HomePage extends BasePage {
 
-    @FindBy(id = "nava")
+    String homeId = "nava";
+    @FindBy()
     private WebElement navBar; // demo blase store nav id
 
     public HomePage(WebDriver driver) {
@@ -22,6 +23,10 @@ public class HomePage extends BasePage {
         return driver.getTitle();
     }
 
+    public void goToHomePage() {
+        WebElement homeElement = driver.findElement(By.id(homeId));
+        homeElement.click();
+    }
     public void addFirstProductToCart() {
         // simple approach: click first product, add to cart, accept alert
         WebElement firstProduct = driver.findElement(By.cssSelector(".card-block .hrefch"));
