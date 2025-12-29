@@ -14,8 +14,14 @@ Feature: Web UI - DemoBlaze website
     Then the product detail page should be displayed
 
   Scenario: Add product to cart
+    Given I am at the product detailPage
     When I add the first product to cart
     Then the cart should contain at least 1 item
+
+  Scenario: Add multiple products to cart
+    Given I open the homepage
+    When I add 5 products to the cart
+    Then the cart should contain at least 5 items
 
   Scenario: Remove product from cart
     Given I have a product in the cart

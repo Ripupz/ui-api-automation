@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Automation Suite" parallel="tests" thread-count="4">
+
+    <test name="API Tests">
+        <classes>
+            <class name="com.tests.runners.ApiRunner"/>
+        </classes>
+    </test>
+
+    <test name="Web UI Tests">
+        <classes>
+            <class name="com.tests.runners.WebRunner"/>
+        </classes>
+    </test>
+
+</suite>
