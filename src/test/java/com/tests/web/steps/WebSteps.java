@@ -8,8 +8,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 public class WebSteps {
 
@@ -24,9 +25,10 @@ public class WebSteps {
     @Then("the page title should contain {string}")
     public void thePageTitleShouldContain(String expected) {
         String actual = driver.getTitle();
-        assertTrue(
-                "Expected title to contain: " + expected + " but got: " + actual,
-                actual.contains(expected)
+        // In TestNG: assertTrue(condition, message)
+        Assert.assertTrue(
+                actual.contains(expected),
+                "Expected title to contain: " + expected + " but got: " + actual
         );
     }
 
