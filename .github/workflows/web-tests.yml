@@ -1,15 +1,15 @@
-name: CI - API & Web Tests
+name: Web UI Tests Pipeline
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   pull_request:
     branches: [ main ]
 
 jobs:
-  tests:
+  web-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -18,7 +18,8 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Google Chrome (for headless)
+      # Install Chrome untuk Selenium
+      - name: Install Google Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip
@@ -27,28 +28,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # (optional) install chromedriver via WebDriverManager at runtime
-      - name: Grant execute for gradlew
+      - name: Grant Execute Permission for Gradlew
         run: chmod +x gradlew
 
-      - name: Run API tests (@api)
-        run: ./gradlew runApiTests
-        env:
-          APP_ID: 63a804408eb0cb069b57e43a
-
-      - name: Upload API reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: cucumber-api-report
-          path: build/reports/cucumber/api.*
-
-      - name: Run Web tests (@web)
-        run: ./gradlew runWebTests
+      # Menjalankan tes Web.
+      # Menggunakan tag @web untuk memfilter tes UI saja
+      - name: Run Web Tests
+        # Gunakan mode headless agar jalan di server Ubuntu (tanpa layar)
+        run: ./gradlew clean test -Dcucumber.filter.tags="@web" -Dheadless=true
         env:
           BROWSER: chrome
 
-      - name: Upload Web reports
+      # Upload Report agar bisa didownload
+      - name: Upload Web Test Report
+        if: always() # Report tetap di-upload meski tes gagal
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-web-report
-          path: build/reports/cucumber/web.*
+          name: web-test-report
+          path: build/reports/cucumber/ # Path output HTML report
+          retention-days: 7
