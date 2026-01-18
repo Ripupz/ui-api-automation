@@ -3,6 +3,7 @@ package com.tests.web.steps;
 
 import com.tests.web.utils.DriverFactory;
 import io.cucumber.java.PendingException;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -171,5 +172,81 @@ public class WebSteps {
 
         // 2. Assert that the size is 0
         Assert.assertEquals(cartRows.size(), 0, "The cart was expected to be empty, but it still contains items!");
+    }
+// Negative Test 
+    @When("I proceed to checkout")
+    public void iProceedToCheckout() {
+        // 1. FIX: Navigate to the Cart Page first
+        // The previous error happened because we were still on the Product Page
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("cartur"))).click();
+
+        // 2. Click 'Place Order' to open the modal
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Place Order']"))).click();
+
+        // 3. Wait for the Modal form to be visible so the next step doesn't fail
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("orderModal")));
+    }
+
+    @And("I submit the order without filling the form")
+    public void iSubmitTheOrderWithoutFillingTheForm() {
+        // Since the modal is already open from the previous step, we just click 'Purchase'
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Purchase']"))).click();
+    }
+
+    @Then("an error message should be displayed")
+    public void anErrorMessageShouldBeDisplayed() {
+        // 1. Wait for the browser popup (Alert) to appear
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        // 2. Switch focus to the alert and get the text
+        Alert alert = driver.switchTo().alert();
+        String actualErrorText = alert.getText();
+
+        // 3. Verify the text matches Demoblaze's validation message
+        Assert.assertTrue(
+                actualErrorText.contains("Please fill out Name and Creditcard."),
+                "Expected validation error not found! Got: " + actualErrorText
+        );
+
+        // 4. IMPORTANT: Close the alert so the browser doesn't freeze
+        alert.accept();
+    }
+
+    @And("I fill the order form with valid data")
+    public void iFillTheOrderFormWithValidData() {
+        // 1. Ensure the modal is visible before typing
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("orderModal")));
+
+        // 2. Fill in the form fields using their IDs
+        driver.findElement(By.id("name")).sendKeys("Test User");
+        driver.findElement(By.id("country")).sendKeys("USA");
+        driver.findElement(By.id("city")).sendKeys("New York");
+        driver.findElement(By.id("card")).sendKeys("1234567890123456");
+        driver.findElement(By.id("month")).sendKeys("12");
+        driver.findElement(By.id("year")).sendKeys("2025");
+    }
+
+    @And("I confirm the purchase")
+    public void iConfirmThePurchase() {
+        // Click the 'Purchase' button at the bottom of the modal
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Purchase']"))).click();
+    }
+
+    @Then("the purchase should be successful")
+    public void thePurchaseShouldBeSuccessful() {
+        // 1. Wait for the success 'SweetAlert' dialog to appear
+        // The success message header is in an <h2> tag with specific text
+        WebElement successHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//h2[contains(text(),'Thank you for your purchase!')]")));
+
+        // 2. Assert the header is displayed
+        Assert.assertTrue(successHeader.isDisplayed(), "Success message was not displayed!");
+
+        // 3. (Optional) Print the confirmation details (ID, Amount, etc.) for debugging
+        String orderDetails = driver.findElement(By.cssSelector("p.lead")).getText();
+        System.out.println("Order Confirmation Details: \n" + orderDetails);
+
+        // 4. Click 'OK' to close the modal and reset the state
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='OK']"))).click();
     }
 }

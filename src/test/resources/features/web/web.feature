@@ -40,6 +40,7 @@ Feature: Web UI - DemoBlaze website
 
   @e2e
   Scenario: Complete purchase successfully
+    Given I am at the product detailPage
     When I add the first product to cart
     And I proceed to checkout
     And I fill the order form with valid data
