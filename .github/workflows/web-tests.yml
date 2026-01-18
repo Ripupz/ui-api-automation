@@ -2,7 +2,9 @@ name: Web UI Tests Pipeline
 
 on:
   workflow_dispatch:
-  pull_request:
+  pull_request:           # Jalan otomatis saat ada PR ke main
+    branches: [ main ]
+  push:                   # Jalan saat push ke main
     branches: [ main ]
 
 jobs:
@@ -12,10 +14,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       # Install Chrome untuk Selenium
