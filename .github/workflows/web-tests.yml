@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-test-report
-          path: build/reports/tests/test # Path output HTML report
+          path: build/reports # Path output HTML report
           retention-days: 7
