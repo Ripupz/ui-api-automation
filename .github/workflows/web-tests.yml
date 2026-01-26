@@ -37,7 +37,7 @@ jobs:
       # Menggunakan tag @web untuk memfilter tes UI saja
       - name: Run Web Tests
         # Gunakan mode headless agar jalan di server Ubuntu (tanpa layar)
-        run: ./gradlew clean test -Dcucumber.filter.tags="@web" -Dheadless=true
+        run: ./gradlew clean test --tests "com.tests.runners.WebRunner" -Dheadless=true
         env:
           BROWSER: chrome
 
@@ -47,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: web-test-report
-          path: build/reports/cucumber/ # Path output HTML report
+          path: build/reports/tests/test # Path output HTML report
           retention-days: 7

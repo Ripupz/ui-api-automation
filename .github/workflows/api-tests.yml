@@ -26,7 +26,7 @@ jobs:
       # Menjalankan tes API. Pastikan task 'test' menjalankan runner API Anda.
       # Jika Anda menggunakan tag, perintahnya seperti di bawah:
       - name: Run API Tests
-        run: ./gradlew clean test -Dcucumber.filter.tags="@api"
+        run: ./gradlew clean test --tests "com.tests.runners.ApiRunner"
         env:
           APP_ID: ${{ secrets.APP_ID }}
 
@@ -36,5 +36,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: api-test-report
-          path: build/reports/cucumber/
+          path: build/reports/tests/test
           retention-days: 7
